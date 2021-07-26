@@ -1,8 +1,8 @@
-export const TABLE = 'buildings'
+export const TABLE = 'buildings';
 
 export enum BUILDING_TYPES {
-    Residential= 'residental',
-    Offices= 'offices',
-    Commercial= 'commercial',
-    Mixed= 'mixed',
+  Residential = 'residental',
+  Offices = 'offices',
+  Commercial = 'commercial',
+  Mixed = 'mixed',
 }
