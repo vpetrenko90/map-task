@@ -6,7 +6,7 @@ export class GeoController {
   constructor(public service: GeoService) {}
 
   @Post('/')
-  import(): Promise<void> {
+  import(): Promise<any> {
     return this.service.import();
   }
 }
