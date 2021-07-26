@@ -2,8 +2,8 @@ import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 const center = {
-  lat: 51.505,
-  lng: -0.09,
+  lat: 47.3810326,
+  lng: 8.5583433,
 };
 
 function DraggableMarker() {
@@ -12,18 +12,30 @@ function DraggableMarker() {
   const markerRef = useRef(null);
   const eventHandlers = useMemo(
     () => ({
-      dragend() {
+      async dragend() {
         const marker = markerRef.current;
         if (marker != null) {
           //@ts-ignore
           setPosition(marker.getLatLng());
           //@ts-ignore
-          console.log('lang/lat', marker.getLatLng());
+          const point = marker.getLatLng();
+          console.log('lang/lat', point);
+          await getPrice(point);
         }
       },
     }),
     [],
   );
+
+  const getPrice = async (point: { lng: string; lat: string }) => {
+    const { lng, lat } = point;
+    const response = await fetch(
+      `http://localhost:2222/geo/price?long=${lng}&lat=${lat}`,
+    );
+    const items = await response.json();
+    console.log(items);
+  };
+
   const toggleDraggable = useCallback(() => {
     setDraggable(d => !d);
   }, []);
