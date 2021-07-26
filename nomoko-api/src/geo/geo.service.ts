@@ -3,20 +3,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as csv from 'fast-csv';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Buildings } from '@app/geo/geo.entity';
 import { plainToClass } from 'class-transformer';
-import { BUILDING_TYPES } from '@app/geo/geo.constants';
 import { Point } from 'geojson';
 import { Repository } from 'typeorm';
 
-const FILE = 'properties_f.csv';
-
-interface GeoCsvRow {
-  Coordinates: string;
-  ['Price/m^2']: string;
-  BuildingType: BUILDING_TYPES;
-  Parking: string;
-}
+import { Buildings } from '@app/geo/geo.entity';
+import { FILE_DATA, GeoCsvRow } from '@app/geo/geo.constants';
+import { RequestParams } from '@app/geo/types';
 
 @Injectable()
 export class GeoService {
@@ -27,7 +20,7 @@ export class GeoService {
 
   async import(): Promise<{ response: string }> {
     return new Promise((resolve, reject) => {
-      fs.createReadStream(path.resolve(__dirname, FILE))
+      fs.createReadStream(path.resolve(__dirname, FILE_DATA))
         .pipe(csv.parse({ headers: true, delimiter: ';', objectMode: true }))
         .transform((row: GeoCsvRow, next): void => {
           const parsed = row.Coordinates?.match(/POINT\((\d.+)\s(\d.+)\)/);
@@ -54,7 +47,12 @@ export class GeoService {
     });
   }
 
-  async find(): Promise<Buildings[]> {
-    return this.buildingsRepository.find();
+  async find(query: RequestParams): Promise<Buildings[]> {
+    const { lat, long } = query;
+    if (lat && long) {
+      return this.buildingsRepository.find({ id: 1 });
+    } else {
+      return this.buildingsRepository.find();
+    }
   }
 }

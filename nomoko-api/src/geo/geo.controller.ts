@@ -1,6 +1,7 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Req, Query } from '@nestjs/common';
 import { GeoService } from '@app/geo/geo.service';
-import {Buildings} from "@app/geo/geo.entity";
+import { Buildings } from '@app/geo/geo.entity';
+import {RequestParams} from "@app/geo/types";
 
 @Controller('geo')
 export class GeoController {
@@ -12,7 +13,7 @@ export class GeoController {
   }
 
   @Get('/')
-  getList(): Promise<Buildings[]> {
-    return this.service.find();
+  getList(@Query() query: RequestParams): Promise<Buildings[]> {
+    return this.service.find(query);
   }
 }

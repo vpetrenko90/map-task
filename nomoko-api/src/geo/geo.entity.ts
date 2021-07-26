@@ -2,7 +2,7 @@ import { Index, Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { IsEnum } from 'class-validator';
 import { Point } from 'geojson';
 
-import { BUILDING_TYPES, TABLE } from './geo.constants';
+import { BuildingsTypes, TABLE } from './geo.constants';
 
 @Entity(TABLE)
 export class Buildings {
@@ -12,9 +12,9 @@ export class Buildings {
   @Column({ type: 'real', nullable: false })
   price: number;
 
-  @IsEnum(BUILDING_TYPES)
-  @Column({ type: 'enum', enum: BUILDING_TYPES, nullable: false })
-  type: BUILDING_TYPES;
+  @IsEnum(BuildingsTypes)
+  @Column({ type: 'enum', enum: BuildingsTypes, nullable: false })
+  type: BuildingsTypes;
 
   @Column({ type: 'boolean', default: false })
   isParking: boolean;
