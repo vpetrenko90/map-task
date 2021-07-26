@@ -31,6 +31,11 @@ export class GeoCreate1627304760736 implements MigrationInterface {
             srid: 4326,
             isNullable: false,
           },
+          {
+            name: 'isParking',
+            type: 'boolean',
+            default: false,
+          }
         ],
       }),
       true,

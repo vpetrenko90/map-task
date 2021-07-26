@@ -7,7 +7,7 @@ import { BUILDING_TYPES, TABLE } from './geo.constants';
 @Entity(TABLE)
 export class Buildings {
   @PrimaryGeneratedColumn()
-  readonly id: number;
+  readonly id?: number;
 
   @Column({ type: 'real', nullable: false })
   price: number;
@@ -15,6 +15,9 @@ export class Buildings {
   @IsEnum(BUILDING_TYPES)
   @Column({ type: 'enum', enum: BUILDING_TYPES, nullable: false })
   type: BUILDING_TYPES;
+
+  @Column({ type: 'boolean', default: false })
+  isParking: boolean;
 
   @Index({ spatial: true })
   @Column({
