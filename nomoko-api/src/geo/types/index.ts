@@ -5,7 +5,7 @@ export interface RequestParams {
   long: string;
 }
 
-interface GeoCsvRow {
+export interface GeoCsvRow {
   Coordinates: string;
   ['Price/m^2']: string;
   BuildingType: BuildingsTypes;
