@@ -1,6 +1,6 @@
 import { BuildingsTypes } from '@app/geo/geo.constants';
 
-export interface RequestParams {
+export interface GeoPoint {
   lat: string;
   long: string;
 }

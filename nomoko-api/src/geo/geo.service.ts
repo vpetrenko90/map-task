@@ -9,7 +9,7 @@ import { Point } from 'geojson';
 
 import { Buildings } from '@app/geo/geo.entity';
 import { FILE_DATA } from '@app/geo/geo.constants';
-import { GeoCsvRow } from '@app/geo/types';
+import { GeoCsvRow, GeoPoint } from '@app/geo/types';
 
 @Injectable()
 export class GeoService {
@@ -52,18 +52,21 @@ export class GeoService {
     return this.buildingsRepository.find();
   }
 
-  async getNearbyPoints() {
-    const sql = `SELECT * FROM
-        (
-            SELECT *, ST_DISTANCE(location::geography, 'SRID=4326;POINT (47.4052478 8.5472437)'::geography ) AS st_dist
-                FROM buildings
-            ORDER BY location::geometry <-> 'SRID=4326;POINT (47.4052478 8.5472437)'::geometry
-        )
-        AS s
-        ORDER BY st_dist LIMIT 5;`;
+  async getNearbyPoints(point: GeoPoint) {
+    const { long, lat } = point;
 
     const queryRunner = this.connection.createQueryRunner();
-    return queryRunner.query(sql);
+    return queryRunner.query(
+      `SELECT  * FROM
+        (
+            SELECT *, ST_DISTANCE(location::geography, ST_MakePoint($1, $2)::geography ) AS st_dist
+                FROM buildings
+            ORDER BY location::geometry <-> ST_SetSRID(ST_MakePoint($1, $2), 4326)::geometry
+        )
+        AS s
+        ORDER BY st_dist LIMIT 5;`,
+      [long, lat],
+    );
   }
 
   async getPredictPrice(list) {

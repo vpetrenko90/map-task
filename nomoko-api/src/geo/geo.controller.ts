@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Req, Query } from '@nestjs/common';
 import { GeoService } from '@app/geo/geo.service';
 import { Buildings } from '@app/geo/geo.entity';
-import { RequestParams } from '@app/geo/types';
+import { GeoPoint } from '@app/geo/types';
 
 @Controller('geo')
 export class GeoController {
@@ -18,10 +18,10 @@ export class GeoController {
   }
 
   @Get('/price')
-  async getPredictedPrice(@Query() query: RequestParams) {
-    const list = await this.service.getNearbyPoints();
+  async getPredictedPrice(@Query() point: GeoPoint) {
+    const list = await this.service.getNearbyPoints(point);
     const price = await this.service.getPredictPrice(list);
 
-    return { price };
+    return { price, list };
   }
 }
