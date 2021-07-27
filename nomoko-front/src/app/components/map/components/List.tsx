@@ -1,23 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import MarkerItem from './Item';
+import { useFetchMarkers } from '../api';
 
 function MarkersList() {
-  const [markers, setMarkers] = useState<any>([]);
-
-  const getMarkers = async () => {
-    const response = await fetch(`http://localhost:2222/geo`);
-    const items = await response.json();
-    setMarkers(items);
-  };
-
-  useEffect(() => {
-    getMarkers();
-  }, []);
+  const { data, isLoading, error } = useFetchMarkers();
 
   return (
     <>
-      {markers.map((item: any) => (
-        <MarkerItem item={item} />
+      {data?.map((item: any) => (
+        <MarkerItem key={item.id} item={item} />
       ))}
     </>
   );
