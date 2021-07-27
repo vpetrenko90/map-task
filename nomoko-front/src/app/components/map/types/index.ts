@@ -12,7 +12,7 @@ export interface Buildings {
   isParking: boolean;
   location: {
     type: string;
-    coordinated: number[];
+    coordinates: [number, number];
   };
   st_dist?: number;
 }

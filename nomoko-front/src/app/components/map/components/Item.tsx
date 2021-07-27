@@ -1,17 +1,16 @@
 import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
+import { LatLngExpression } from 'leaflet';
 
 export interface Props {
-  item: { location: { coordinates: number[] }; price: any };
+  position: LatLngExpression;
   children?: React.ReactNode;
 }
 
-function MarkerItem({ item, children }: Props) {
-  const { location, price } = item;
-
+function MarkerItem({ position, children }: Props) {
   return (
-    <Marker position={[location.coordinates[1], location.coordinates[0]]}>
-      {children || <Popup>${price}</Popup>}
+    <Marker position={position}>
+      <Popup>{children}</Popup>
     </Marker>
   );
 }

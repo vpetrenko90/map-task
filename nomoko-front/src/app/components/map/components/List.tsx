@@ -4,6 +4,7 @@ import MarkerItem from './Item';
 import { getMarkers } from '../api';
 import { Loader } from '../../ui/loader';
 import { Buildings } from '../types';
+import MarkerBuildingPopup from './MarkerPopup';
 
 function MarkersList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,8 +22,16 @@ function MarkersList() {
   return (
     <>
       <Loader isLoading={isLoading} />
-      {data?.map((item: any) => (
-        <MarkerItem key={item.id} item={item} />
+      {data?.map((item: Buildings) => (
+        <MarkerItem
+          key={item.id}
+          position={[
+            item.location.coordinates[1],
+            item.location.coordinates[0],
+          ]}
+        >
+          <MarkerBuildingPopup item={item} />
+        </MarkerItem>
       ))}
     </>
   );
