@@ -65,7 +65,7 @@ export class GeoService {
         )
         AS s
         ORDER BY st_dist LIMIT 5;`;
-    return queryRunner.query(sql, [lat, long]);
+    return queryRunner.query(sql, [long, lat]);
   }
 
   async getPredictPrice(list) {
