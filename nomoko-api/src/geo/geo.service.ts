@@ -56,18 +56,16 @@ export class GeoService {
     const { long, lat } = point;
 
     const queryRunner = this.connection.createQueryRunner();
-    return queryRunner.query(
-      `SELECT  * FROM
+    const sql = `SELECT  * FROM
         (
-            SELECT *, ST_DISTANCE(location::geography, ST_MakePoint($1, $2)::geography ) AS st_dist
+            SELECT *, ST_DISTANCE(location::geography, ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography ) AS st_dist
                 FROM buildings
             ORDER BY location::geometry <-> ST_SetSRID(ST_MakePoint($1, $2), 4326)::geometry
-            LIMIT 100
+            LIMIT 1000
         )
         AS s
-        ORDER BY st_dist LIMIT 5;`,
-      [long, lat],
-    );
+        ORDER BY st_dist LIMIT 5;`;
+    return queryRunner.query(sql, [lat, long]);
   }
 
   async getPredictPrice(list) {
