@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import L from 'leaflet';
+import React, { useState } from 'react';
+import { LeafletMouseEvent, LatLngLiteral } from 'leaflet';
 import { Marker, useMapEvent, Tooltip, Popup } from 'react-leaflet';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -7,63 +7,48 @@ import { Typography } from '@material-ui/core';
 
 import '../style/Map.css';
 import { getPrice } from '../api';
-
-import markerRedIcon from '../assets/marker-icon-2x-red.png';
-import markerVioletIcon from '../assets/marker-icon-2x-violet.png';
-import markerShadow from '../assets/marker-shadow.png';
+import { Buildings } from '../types';
+import { MARKERS } from '../constants';
 import MarkerItem from './Item';
 
-const markerRed = new L.Icon({
-  iconUrl: markerRedIcon,
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
-const markerViolet = new L.Icon({
-  iconUrl: markerVioletIcon,
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
 function DynamicMarker() {
-  const [price, setPrice] = useState('');
-  const [list, setList] = useState('');
+  const [price, setPrice] = useState<number>();
+  const [nearbyList, setNearbyList] = useState<Buildings[]>();
   const [isLoading, setIsLoading] = useState(false);
-  const [position, setPosition] = useState<any>(null);
-  const [positions, setPositions] = useState<any>([]);
 
-  useMapEvent('click', async (e: any) => {
-    const { lat, lng } = e.latlng;
+  const [currentPosition, setCurrentPosition] = useState<LatLngLiteral>();
+  const [positions, setPositions] = useState<LatLngLiteral[]>([]);
 
-    if (position) {
-      setPositions([...positions, position]);
+  useMapEvent('click', async ({ latlng }: LeafletMouseEvent) => {
+    const { lat, lng } = latlng;
+
+    if (currentPosition) {
+      setPositions([...positions, currentPosition]);
     }
 
-    if (e.latlng) {
+    if (latlng) {
       setIsLoading(true);
-      setPosition([lat, lng]);
+      setCurrentPosition(latlng);
       const { price, list } = await getPrice({ lat, lng });
       setPrice(price);
-      setList(list);
+      setNearbyList(list);
       setIsLoading(false);
     }
   });
 
   return (
     <>
-      {positions?.map((item: any, i: number) => (
-        <Marker key={i} position={item} icon={markerViolet}>
+      {positions?.map((item: LatLngLiteral) => (
+        <Marker
+          key={`${item.lng}${item.lat}`}
+          position={item}
+          icon={MARKERS.violet}
+        >
           <Popup>${price}</Popup>
         </Marker>
       ))}
-      {position && (
-        <Marker position={position} icon={markerRed}>
+      {currentPosition && (
+        <Marker position={currentPosition} icon={MARKERS.red}>
           <Tooltip permanent>
             {isLoading ? (
               <CircularProgress size={15} />

@@ -17,6 +17,7 @@ function MapComponent() {
   return (
     <div className="App">
       <MapContainer
+        dragging
         center={DEFAULT_CENTER}
         zoom={DEFAULT_ZOOM}
         scrollWheelZoom={false}

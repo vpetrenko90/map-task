@@ -5,11 +5,19 @@ export enum BuildingsTypes {
   Mixed = 'mixed',
 }
 
-export interface Building {
+export interface Buildings {
   id: number;
-  isParking: boolean;
-  location: string;
   price: number;
-  st_dist: number;
   type: BuildingsTypes;
+  isParking: boolean;
+  location: {
+    type: string;
+    coordinated: number[];
+  };
+  st_dist?: number;
+}
+
+export interface GetPriceResponse {
+  price: number;
+  list: Buildings[];
 }
