@@ -5,8 +5,9 @@ import { getMarkers } from '../api';
 import { Loader } from '../../ui/loader';
 import { Buildings } from '../types';
 import MarkerBuildingPopup from './MarkerBuildingPopup';
+import { MARKERS } from '../constants';
 
-function MarkersList() {
+function MarkersList({ nearbyList = [] }: { nearbyList: Buildings[] }) {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<Buildings[]>([]);
 
@@ -22,17 +23,21 @@ function MarkersList() {
   return (
     <>
       <Loader isLoading={isLoading} />
-      {data?.map((item: Buildings) => (
-        <MarkerItem
-          key={item.id}
-          position={[
-            item.location.coordinates[1],
-            item.location.coordinates[0],
-          ]}
-        >
-          <MarkerBuildingPopup item={item} />
-        </MarkerItem>
-      ))}
+      {data?.map((item: Buildings) => {
+        const isNearBy = nearbyList.find((e: any) => e.id === item.id);
+        return (
+          <MarkerItem
+            key={item.id}
+            position={[
+              item.location.coordinates[1],
+              item.location.coordinates[0],
+            ]}
+            icon={isNearBy ? MARKERS.gold : MARKERS.blue}
+          >
+            <MarkerBuildingPopup item={item} />
+          </MarkerItem>
+        );
+      })}
     </>
   );
 }

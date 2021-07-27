@@ -11,9 +11,12 @@ import { MARKERS } from '../constants';
 import MarkerItem from './Item';
 import MarkerPredictPopup from './MarkerPredictPopup';
 
-function DynamicMarker() {
+function DynamicMarker({
+  onSearch,
+}: {
+  onSearch?: (data: Buildings[]) => void;
+}) {
   const [price, setPrice] = useState<number>();
-  const [nearbyList, setNearbyList] = useState<Buildings[]>();
   const [isLoading, setIsLoading] = useState(false);
 
   const [currentPosition, setCurrentPosition] = useState<LatLngLiteral>();
@@ -31,8 +34,10 @@ function DynamicMarker() {
       setCurrentPosition(latlng);
       const { price, list } = await getPrice({ lat, lng });
       setPrice(price);
-      setNearbyList(list);
       setIsLoading(false);
+      if (onSearch) {
+        onSearch(list);
+      }
     }
   });
 
