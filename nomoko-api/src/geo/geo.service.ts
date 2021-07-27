@@ -27,7 +27,7 @@ export class GeoService {
           const parsed = row.Coordinates?.match(/POINT\((\d.+)\s(\d.+)\)/);
           const location: Point = {
             type: 'Point',
-            coordinates: [parseFloat(parsed[1]), parseFloat(parsed[2])],
+            coordinates: [parseFloat(parsed[2]), parseFloat(parsed[1])],
           };
 
           return next(

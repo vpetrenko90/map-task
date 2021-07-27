@@ -35,11 +35,16 @@ function MyComponent({ onSet }: { onSet: any }) {
 }
 
 function App() {
+  const [text, setText] = useState('');
   const [position, setPosition] = useState<any>(null);
 
-  const onSetHandle = (e: any) => {
-    setPosition([e.lat, e.lng]);
-    console.log('ADD MARKER', [e.lat, e.lng]);
+  const onSetHandle = async (e: any) => {
+    const { lat, lng } = e;
+    setPosition([lat, lng]);
+    console.log('ADD MARKER', e);
+    //@ts-ignore
+    const result = await getPrice({ lat, lng });
+    setText(`Estimated price = ${result?.price}`);
   };
 
   const markerIcon = new L.Icon({
@@ -48,6 +53,15 @@ function App() {
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
   });
+
+  const getPrice = async (point: { lng: string; lat: string }) => {
+    const { lng, lat } = point;
+    const response = await fetch(
+      `http://localhost:2222/geo/price?long=${lng}&lat=${lat}`,
+    );
+    const items = await response.json();
+    return items;
+  };
 
   return (
     <div className="App">
@@ -63,9 +77,7 @@ function App() {
         <MyComponent onSet={onSetHandle} />
         {position && (
           <Marker position={position} icon={markerIcon}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
+            <Popup>{text}</Popup>
           </Marker>
         )}
         {markers.length > 0 &&
