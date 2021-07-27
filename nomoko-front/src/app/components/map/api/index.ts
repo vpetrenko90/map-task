@@ -1,5 +1,3 @@
-import { useQuery } from 'react-query';
-
 const BASIC_URL = process.env.REACT_APP_API_HOST;
 
 async function getList<Entity>(url: string): Promise<Entity[]> {
@@ -7,5 +5,10 @@ async function getList<Entity>(url: string): Promise<Entity[]> {
   return response.json();
 }
 
-export const useFetchMarkers = () =>
-  useQuery<any>(['markers'], () => getList(`${BASIC_URL}/geo`));
+export const getMarkers = () => {
+  return getList(`${BASIC_URL}/geo`);
+};
+
+export const getPrice = ({ lng, lat }: any): Promise<any> => {
+  return getList(`${BASIC_URL}/geo/price?long=${lng}&lat=${lat}`);
+};

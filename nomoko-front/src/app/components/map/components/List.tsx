@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import MarkerItem from './Item';
-import { useFetchMarkers } from '../api';
+import { getMarkers } from '../api';
 import { Loader } from '../../ui/loader';
 
 function MarkersList() {
-  const { data, isLoading } = useFetchMarkers();
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<any>([]);
+
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      const list = await getMarkers();
+      setData(list);
+      setIsLoading(false);
+    })();
+  }, []);
 
   return (
     <>

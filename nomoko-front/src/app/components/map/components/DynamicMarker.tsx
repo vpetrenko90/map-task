@@ -1,51 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import L from 'leaflet';
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  useMapEvent,
-  Tooltip,
-} from 'react-leaflet';
+import { Marker, useMapEvent, Tooltip } from 'react-leaflet';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Typography } from '@material-ui/core';
 
 import '../style/Map.css';
-import markerImage from '../assets/pin.svg';
-import MarkersList from './List';
+import { getPrice } from '../api';
+
+import marker from '../assets/marker-icon-2x-red.png';
+import markerShadow from '../assets/marker-shadow.png';
 
 function DynamicMarker({ onSet = () => {} }: { onSet?: any }) {
-  const [text, setText] = useState('');
+  const [price, setPrice] = useState('');
+  const [list, setList] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [position, setPosition] = useState<any>(null);
 
-  const getPrice = async (point: { lng: string; lat: string }) => {
-    const { lng, lat } = point;
-    const response = await fetch(
-      `http://localhost:2222/geo/price?long=${lng}&lat=${lat}`,
-    );
-    const items = await response.json();
-    return items;
-  };
-
   const markerIcon = new L.Icon({
-    iconUrl: markerImage,
+    iconUrl: marker,
+    shadowUrl: markerShadow,
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
+    shadowSize: [41, 41],
   });
 
   const map = useMapEvent('click', async (e: any) => {
     onSet(e.latlng);
     const { lat, lng } = e.latlng;
 
-    setPosition([lat, lng]);
-    const result = await getPrice({ lat, lng });
-    setText(`Estimated price = $${result?.price}`);
+    if (e.latlng) {
+      setIsLoading(true);
+      setPosition([lat, lng]);
+      const { price, list } = await getPrice({ lat, lng });
+      setPrice(price);
+      setList(list);
+      setIsLoading(false);
+    }
   });
 
   return (
     <>
       {position && (
         <Marker position={position} icon={markerIcon}>
-          <Tooltip permanent>{text}</Tooltip>
+          <Tooltip permanent>
+            {isLoading ? (
+              <CircularProgress size={15} />
+            ) : (
+              <Typography>${price}</Typography>
+            )}
+          </Tooltip>
         </Marker>
       )}
     </>
