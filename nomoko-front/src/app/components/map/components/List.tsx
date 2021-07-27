@@ -24,7 +24,7 @@ function MarkersList({ nearbyList = [] }: { nearbyList: Buildings[] }) {
     <>
       <Loader isLoading={isLoading} />
       {data?.map((item: Buildings) => {
-        const isNearBy = nearbyList.find((e: any) => e.id === item.id);
+        const isNearBy = nearbyList.find(({ id }) => id === item.id);
         return (
           <MarkerItem
             key={item.id}
