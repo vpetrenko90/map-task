@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import L from 'leaflet';
 import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   useMapEvent,
   Tooltip,
 } from 'react-leaflet';
 
 import '../style/Map.css';
-import markerImage from './pin.svg';
+import markerImage from '../assets/pin.svg';
 import MarkersList from './List';
 
 function MyComponent({ onSet }: { onSet: any }) {
