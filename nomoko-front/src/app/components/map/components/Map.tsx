@@ -11,13 +11,7 @@ import {
 import '../style/Map.css';
 import markerImage from '../assets/pin.svg';
 import MarkersList from './List';
-
-function MyComponent({ onSet }: { onSet: any }) {
-  const map = useMapEvent('click', e => {
-    onSet(e.latlng);
-  });
-  return null;
-}
+import DynamicMarker from './DynamicMarker';
 
 function MapComponent() {
   const [text, setText] = useState('');
@@ -60,13 +54,8 @@ function MapComponent() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         />
-        <MyComponent onSet={onSetHandle} />
-        {position && (
-          <Marker position={position} icon={markerIcon}>
-            <Tooltip permanent>{text}</Tooltip>
-          </Marker>
-        )}
         <MarkersList />
+        <DynamicMarker />
       </MapContainer>
     </div>
   );

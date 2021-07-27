@@ -9,7 +9,7 @@ function MarkersList() {
 
   return (
     <>
-      <Loader isLoading={isLoading || true} />
+      <Loader isLoading={isLoading} />
       {data?.map((item: any) => (
         <MarkerItem key={item.id} item={item} />
       ))}
