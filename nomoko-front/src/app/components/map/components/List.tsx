@@ -4,7 +4,7 @@ import MarkerItem from './Item';
 import { getMarkers } from '../api';
 import { Loader } from '../../ui/loader';
 import { Buildings } from '../types';
-import MarkerBuildingPopup from './MarkerPopup';
+import MarkerBuildingPopup from './MarkerBuildingPopup';
 
 function MarkersList() {
   const [isLoading, setIsLoading] = useState(false);
