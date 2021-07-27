@@ -1,13 +1,3 @@
-export interface Point {
-  lat: string;
-  lng: string;
-}
-
-export interface Point {
-  lat: string;
-  lng: string;
-}
-
 export enum BuildingsTypes {
   Residential = 'residental',
   Offices = 'offices',

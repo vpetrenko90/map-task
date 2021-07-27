@@ -11,13 +11,14 @@ import {
 import '../style/Map.css';
 import MarkersList from './List';
 import DynamicMarker from './DynamicMarker';
+import { DEFAULT_CENTER, DEFAULT_ZOOM } from '../constants';
 
 function MapComponent() {
   return (
     <div className="App">
       <MapContainer
-        center={[47.3810326, 8.5583433]}
-        zoom={13}
+        center={DEFAULT_CENTER}
+        zoom={DEFAULT_ZOOM}
         scrollWheelZoom={false}
       >
         <TileLayer
