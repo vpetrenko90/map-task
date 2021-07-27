@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from 'react-leaflet';
 
-import './Map.css';
+import '../style/Map.css';
 import markerImage from './pin.svg';
 import MarkersList from './List';
 

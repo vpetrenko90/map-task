@@ -1,15 +1,18 @@
 import React from 'react';
 import MarkerItem from './Item';
 import { useFetchMarkers } from '../api';
+import { Loader } from '../../ui/loader';
 
 function MarkersList() {
-  const { data, isLoading, error } = useFetchMarkers();
+  const { data, isLoading } = useFetchMarkers();
 
   return (
     <>
-      {data?.map((item: any) => (
-        <MarkerItem key={item.id} item={item} />
-      ))}
+      <Loader isLoading={isLoading}>
+        {data?.map((item: any) => (
+          <MarkerItem key={item.id} item={item} />
+        ))}
+      </Loader>
     </>
   );
 }
