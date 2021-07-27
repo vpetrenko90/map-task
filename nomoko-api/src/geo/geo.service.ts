@@ -62,6 +62,7 @@ export class GeoService {
             SELECT *, ST_DISTANCE(location::geography, ST_MakePoint($1, $2)::geography ) AS st_dist
                 FROM buildings
             ORDER BY location::geometry <-> ST_SetSRID(ST_MakePoint($1, $2), 4326)::geometry
+            LIMIT 100
         )
         AS s
         ORDER BY st_dist LIMIT 5;`,

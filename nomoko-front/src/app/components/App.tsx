@@ -6,6 +6,7 @@ import {
   Marker,
   Popup,
   useMapEvent,
+  Tooltip,
 } from 'react-leaflet';
 
 import './App.css';
@@ -72,12 +73,13 @@ function App() {
         <MyComponent onSet={onSetHandle} />
         {position && (
           <Marker position={position} icon={markerIcon}>
-            <Popup>{text}</Popup>
+            <Tooltip permanent>{text}</Tooltip>
           </Marker>
         )}
-        {markers.map(({ location, price }: any) => {
+        {markers.map(({ id, location, price }: any) => {
           return (
             <Marker
+              key={id}
               position={[location.coordinates[1], location.coordinates[0]]}
             >
               <Popup>${price}</Popup>
