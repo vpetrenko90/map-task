@@ -6,6 +6,9 @@ const BASIC_URL = process.env.REACT_APP_API_HOST;
 
 async function getList<Entity>(url: string): Promise<Entity> {
   const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText}`);
+  }
   return response.json();
 }
 
