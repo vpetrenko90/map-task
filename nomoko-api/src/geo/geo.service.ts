@@ -23,14 +23,13 @@ export class GeoService {
   async getNearbyPoints(point: GeoPoint): Promise<Buildings[]> {
     const { long, lat } = point;
 
-    const queryRunner = this.connection.createQueryRunner();
     const sql = `
             SELECT *, ST_DISTANCE(location::geography, ST_SetSRID(ST_MakePoint($1, $2), ${SRID})::geography ) AS st_dist
                 FROM buildings
             ORDER BY location::geometry <-> ST_SetSRID(ST_MakePoint($1, $2), ${SRID})::geometry
             LIMIT ${SQL_NEARBY_RESULTS}`;
 
-    const list = await queryRunner.query(sql, [long, lat]);
+    const list = await this.connection.query(sql, [long, lat]);
 
     return list.map((item) => plainToClass(Buildings, item));
   }
