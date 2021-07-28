@@ -7,11 +7,6 @@ import { GeoPoint } from '@app/geo/types';
 export class GeoController {
   constructor(public readonly service: GeoService) {}
 
-  @Post('/')
-  import(): Promise<any> {
-    return this.service.import();
-  }
-
   @Get('/')
   getList(): Promise<Buildings[]> {
     return this.service.find();
