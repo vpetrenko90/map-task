@@ -7,6 +7,7 @@ import { Repository, Connection } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { Point } from 'geojson';
 
+import { sum } from '@app/utils/array';
 import { Buildings } from '@app/geo/geo.entity';
 import { FILE_DATA } from '@app/geo/geo.constants';
 import { GeoCsvRow, GeoPoint } from '@app/geo/types';
@@ -15,7 +16,7 @@ import { GeoCsvRow, GeoPoint } from '@app/geo/types';
 export class GeoService {
   constructor(
     @InjectRepository(Buildings)
-    private buildingsRepository: Repository<Buildings>,
+    private readonly buildingsRepository: Repository<Buildings>,
     private readonly connection: Connection,
   ) {}
 
@@ -68,10 +69,13 @@ export class GeoService {
     return queryRunner.query(sql, [long, lat]);
   }
 
-  async getPredictPrice(list) {
-    const arrSum = (arr) => arr.reduce((a, b) => a + b, 0);
-    const sum = arrSum(list.map((e) => e.price));
+  async getInterpolatedPrice(point) {
+    const list = await this.getNearbyPoints(point);
 
-    return sum / list.length;
+    const result = sum(list.map((e) => e.price));
+
+    const price = result / list.length;
+
+    return { price, list };
   }
 }

@@ -5,7 +5,7 @@ import { GeoPoint } from '@app/geo/types';
 
 @Controller('geo')
 export class GeoController {
-  constructor(public service: GeoService) {}
+  constructor(public readonly service: GeoService) {}
 
   @Post('/')
   import(): Promise<any> {
@@ -19,9 +19,6 @@ export class GeoController {
 
   @Get('/price')
   async getPredictedPrice(@Query() point: GeoPoint) {
-    const list = await this.service.getNearbyPoints(point);
-    const price = await this.service.getPredictPrice(list);
-
-    return { price, list };
+    return this.service.getInterpolatedPrice(point);
   }
 }
