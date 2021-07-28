@@ -2,7 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { Grid, Typography } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
+import '../../../locales/i18n';
 import { MapComponent } from '../map';
 import { MARKERS_HINTS } from '../map/constants';
 
@@ -32,21 +34,24 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
   const classes = useStyles();
+  const { t } = useTranslation();
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={3}>
           <Paper className={classes.paper}>
-            <Typography variant="h3">Nomoko Demo</Typography>
-            <Typography variant="h4">
-              Find approximate building price
-            </Typography>
+            <Typography variant="h3">{t('map.title')}</Typography>
+            <Typography variant="h4">{t('map.subtitle')}</Typography>
 
-            {MARKERS_HINTS.map(({ alt, src, text }) => (
-              <div className={classes.markerContainer}>
-                <img className={classes.markers} src={src} alt={alt} />
-                <span>{text}</span>
+            {MARKERS_HINTS.map(({ type, src }) => (
+              <div className={classes.markerContainer} key={type}>
+                <img
+                  className={classes.markers}
+                  src={src}
+                  alt={t(`map.hints.${type}.alt`)}
+                />
+                <span>{t(`map.hints.${type}.text`)}</span>
               </div>
             ))}
           </Paper>

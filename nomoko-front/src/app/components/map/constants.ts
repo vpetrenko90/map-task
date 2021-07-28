@@ -39,21 +39,9 @@ export const MARKERS = {
   }),
 };
 
-export const MARKERS_HINTS = [
-  { alt: 'Blue marker', src: markerBlueIcon, text: 'Points on map' },
-  {
-    alt: 'Red marker',
-    src: markerRedIcon,
-    text: 'Current position to search estimation',
-  },
-  {
-    alt: 'Violet marker',
-    src: markerVioletIcon,
-    text: 'Search history points',
-  },
-  {
-    alt: 'Gold marker',
-    src: markerGoldIcon,
-    text: 'Nearby locations to estimate price',
-  },
+export const MARKERS_HINTS: { type: string; src: string }[] = [
+  { type: 'blue', src: markerBlueIcon },
+  { type: 'red', src: markerRedIcon },
+  { type: 'violet', src: markerVioletIcon },
+  { type: 'gold', src: markerGoldIcon },
 ];

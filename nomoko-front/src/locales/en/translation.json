@@ -1,0 +1,33 @@
+{
+  "map": {
+    "title": "Nomoko Demo",
+    "subtitle": "Find approximate building price",
+    "markerPopup": {
+      "price": "Price:",
+      "type": "Type:",
+      "parking": "Parking:"
+    },
+    "fields": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "hints": {
+      "blue": {
+        "text": "Points on map",
+        "alt": "Blue marker"
+      },
+      "red": {
+        "text": "Current position to search estimation",
+        "alt": "Red marker"
+      },
+      "violet": {
+        "text": "Search history points",
+        "alt": "Violet marker"
+      },
+      "gold": {
+        "text": "Nearby locations to estimate price",
+        "alt": "Gold marker"
+      }
+    }
+  }
+}
