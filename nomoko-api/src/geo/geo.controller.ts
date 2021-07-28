@@ -9,11 +9,13 @@ export class GeoController {
 
   @Get('/')
   getList(): Promise<Buildings[]> {
-    return this.service.find();
+    return this.service.getList();
   }
 
   @Get('/price')
-  async getPredictedPrice(@Query() point: GeoPoint) {
+  async getPredictedPrice(
+    @Query() point: GeoPoint,
+  ): Promise<{ price: number; list: Buildings[] }> {
     return this.service.getInterpolatedPrice(point);
   }
 }

@@ -2,7 +2,7 @@ import { Index, Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { IsEnum } from 'class-validator';
 import { Point } from 'geojson';
 
-import { BuildingsTypes, TABLE } from './geo.constants';
+import { BuildingsTypes, SRID, TABLE } from './geo.constants';
 
 @Entity(TABLE)
 export class Buildings {
@@ -23,7 +23,7 @@ export class Buildings {
   @Column({
     type: 'geography',
     spatialFeatureType: 'Point',
-    srid: 4326,
+    srid: SRID,
     nullable: false,
   })
   location: Point;

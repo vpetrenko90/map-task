@@ -8,3 +8,7 @@ export enum BuildingsTypes {
   Commercial = 'commercial',
   Mixed = 'mixed',
 }
+
+export const SRID = 4326;
+
+export const SQL_NEARBY_RESULTS = 5;

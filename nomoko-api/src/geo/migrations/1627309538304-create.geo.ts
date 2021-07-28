@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE } from '../geo.constants';
+import { SRID, TABLE } from '../geo.constants';
 
 export class GeoCreate1627304760736 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
@@ -28,14 +28,14 @@ export class GeoCreate1627304760736 implements MigrationInterface {
             name: 'location',
             type: 'geography',
             spatialFeatureType: 'Point',
-            srid: 4326,
+            srid: SRID,
             isNullable: false,
           },
           {
             name: 'isParking',
             type: 'boolean',
             default: false,
-          }
+          },
         ],
       }),
       true,
