@@ -20,6 +20,27 @@ export class GeoService {
     return this.buildingsRepository.find();
   }
 
+  /**
+   * Get first nearby places certain point
+   *
+   * For this task deterministic method via inverse distance weighted (IDW) techniques are used
+   * According to the IDW interpolation the measured values closest to the prediction
+   * location (by st_dist IDW power coefficient) has more influence on the predicted value than those farther away.
+   * So those nearest places are found, then calculate the average price.
+   *
+   * Some 3-d party packages are available to work with spatial analysis (https://github.com/Turfjs/turf),
+   * but PostGIS extension for PostgreSQL supports spatial and geographic objects and has tools to analyze geodata.
+   * For example, operator <-> provides index-assisted nearest-neighbor result sets, that is much more efficient than
+   * using any additional libs.
+   *
+   * Also PostGIS has the other method for interpolation like ST_InterpolateRaster. It is based on 3-d points, we could try
+   * to use price as Z coordinate. Need test this method deeper.
+   *
+   * Now we sort all nearest results by distance and take the latest several results.
+   * As an improvement we can take specific distance values to filter the closest points.
+   *
+   * @param point
+   */
   async getNearbyPoints(point: GeoPoint): Promise<Buildings[]> {
     const { long, lat } = point;
 
