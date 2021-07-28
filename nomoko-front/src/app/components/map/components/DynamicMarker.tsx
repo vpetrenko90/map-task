@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { LeafletMouseEvent, LatLngLiteral } from 'leaflet';
 import { useMapEvent } from 'react-leaflet';
-import { Alert } from '@material-ui/lab';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -11,26 +10,16 @@ import { Buildings } from '../types';
 import { MARKERS } from '../constants';
 import MarkerItem from './Item';
 import MarkerPredictPopup from './MarkerPredictPopup';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    alertContainer: {
-      position: 'absolute',
-      zIndex: 1000,
-    },
-  }),
-);
+import { Alert } from '../../ui/alert';
 
 function DynamicMarker({
   onSearch,
 }: {
   onSearch?: (data: Buildings[]) => void;
 }) {
-  const classes = useStyles();
   const [price, setPrice] = useState<number>();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<string | null>();
 
   const [currentPosition, setCurrentPosition] = useState<LatLngLiteral>();
   const [positions, setPositions] = useState<LatLngLiteral[]>([]);
@@ -44,6 +33,7 @@ function DynamicMarker({
 
     if (latlng) {
       setIsLoading(true);
+      setError(null);
       setCurrentPosition(latlng);
       try {
         const { price, list } = await getPrice({ lat, lng });
@@ -61,11 +51,7 @@ function DynamicMarker({
 
   return (
     <>
-      {error && (
-        <div className={classes.alertContainer}>
-          <Alert severity="error">{error}</Alert>
-        </div>
-      )}
+      {error && <Alert error={error} />}
       {positions?.map((item: LatLngLiteral) => (
         <MarkerItem
           key={`${item.lng}${item.lat}`}
@@ -77,7 +63,7 @@ function DynamicMarker({
       ))}
       {currentPosition && (
         <MarkerItem position={currentPosition} icon={MARKERS.red} opened>
-          {isLoading ? (
+          {isLoading || error ? (
             <CircularProgress size={15} />
           ) : (
             price && <MarkerPredictPopup item={{ price }} />
