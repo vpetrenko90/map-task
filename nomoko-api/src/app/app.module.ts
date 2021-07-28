@@ -2,7 +2,6 @@ import { ConfigModule, ConfigService } from 'nestjs-config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
-import { AppService } from './app.service';
 import { GeoModule } from '@app/geo/geo.module';
 
 @Module({
@@ -18,6 +17,6 @@ import { GeoModule } from '@app/geo/geo.module';
     GeoModule,
   ],
   controllers: [],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}
