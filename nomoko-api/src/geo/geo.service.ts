@@ -28,7 +28,7 @@ export class GeoService {
    * location (by st_dist IDW power coefficient) has more influence on the predicted value than those farther away.
    * So those nearest places are found, then calculate the average price.
    *
-   * Some 3-d party packages are available to work with spatial analysis (https://github.com/Turfjs/turf),
+   * Some 3-rd party packages are available to work with spatial analysis (https://github.com/Turfjs/turf),
    * but PostGIS extension for PostgreSQL supports spatial and geographic objects and has tools to analyze geodata.
    * For example, operator <-> provides index-assisted nearest-neighbor result sets, that is much more efficient than
    * using any additional libs.
